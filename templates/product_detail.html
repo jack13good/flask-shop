@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="product-detail-container">
+    <div class="product-detail">
+        <div class="product-image">
+            {% if product.image %}
+                <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+            {% else %}
+                <div class="no-image">無圖片</div>
+            {% endif %}
+        </div>
+        
+        <div class="product-info">
+            <h1>{{ product.name }}</h1>
+            <div class="price">NT$ {{ product.price }}</div>
+            
+            <div class="stock-info">
+                庫存狀態: 
+                {% if product.stock > 0 %}
+                    <span class="in-stock">有庫存 ({{ product.stock }})</span>
+                {% else %}
+                    <span class="out-of-stock">無庫存</span>
+                {% endif %}
+            </div>
+
+            <div class="product-description">
+                <h2>商品描述</h2>
+                <p>{{ product.description }}</p>
+            </div>
+
+            <div class="product-actions">
+                <div class="quantity-selector">
+                    <button onclick="decreaseQuantity()">-</button>
+                    <input type="number" id="quantity" value="1" min="1" max="{{ product.stock }}">
+                    <button onclick="increaseQuantity()">+</button>
+                </div>
+                
+                <button class="add-to-cart" onclick="addToCart({{ product.id }})">
+                    加入購物車
+                </button>
+            </div>
+
+            <div class="additional-info">
+                <p>商品類別：{{ product.category }}</p>
+                <p>商品編號：{{ product.id }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

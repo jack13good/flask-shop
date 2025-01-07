@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}購物車{% endblock %}
+
+{% block content %}
+<div class="cart-container">
+    <h1>購物車</h1>
+    
+    {% if cart_items %}
+        <div class="cart-items">
+            {% for item in cart_items %}
+            <div class="cart-item" data-product-id="{{ item.product.id }}">
+                <div class="item-image">
+                    {% if item.product.image %}
+                        <img src="{{ url_for('static', filename=item.product.image) }}" alt="{{ item.product.name }}">
+                    {% else %}
+                        <div class="no-image">無圖片</div>
+                    {% endif %}
+                </div>
+                
+                <div class="item-info">
+                    <h3>{{ item.product.name }}</h3>
+                    <p class="price">NT$ {{ item.product.price }}</p>
+                </div>
+                
+                <div class="item-quantity">
+                    <button onclick="updateQuantity({{ item.product.id }}, -1)">-</button>
+                    <input type="number" value="{{ item.quantity }}" min="1" 
+                           onchange="updateCartItem({{ item.product.id }}, this.value)">
+                    <button onclick="updateQuantity({{ item.product.id }}, 1)">+</button>
+                </div>
+                
+                <div class="item-total">
+                    NT$ {{ item.total }}
+                </div>
+                
+                <button class="remove-item" onclick="removeFromCart({{ item.product.id }})">
+                    刪除
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="cart-summary">
+            <div class="total">
+                總計: NT$ {{ total }}
+            </div>
+            <button class="checkout-button" onclick="location.href='#'">
+                前往結帳
+            </button>
+        </div>
+    {% else %}
+        <div class="empty-cart">
+            <p>購物車是空的</p>
+            <a href="{{ url_for('products') }}" class="continue-shopping">
+                繼續購物
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

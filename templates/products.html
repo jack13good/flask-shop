@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}商品列表{% endblock %}
+
+{% block content %}
+<div class="products-container">
+    <h1>商品列表</h1>
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <a href="{{ url_for('product_detail', product_id=product.id) }}" class="product-link">
+                {% if product.image %}
+                    <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+                {% else %}
+                    <div class="no-image">無圖片</div>
+                {% endif %}
+                <h3>{{ product.name }}</h3>
+                <p class="price">NT$ {{ product.price }}</p>
+                <p class="description">{{ product.description }}</p>
+                <p class="stock">庫存: {{ product.stock }}</p>
+            </a>
+            <button onclick="addToCart({{ product.id }})">加入購物車</button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
